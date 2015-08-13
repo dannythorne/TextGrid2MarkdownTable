@@ -20,13 +20,16 @@ window.onload = function()
   main();
 }
 
+var textarea_rows = 16;
+var textarea_cols = 128;
+
 function main()
 {
   var form = document.createElement("form");
 
   var textarea = document.createElement("textarea");
-  textarea.rows = "32";
-  textarea.cols = "128";
+  textarea.rows = textarea_rows;
+  textarea.cols = textarea_cols;
   textarea.value = "";
   textarea.value+= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor";
   textarea.value+= "\nincididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis";
@@ -266,6 +269,12 @@ function make_table()
       cell = document.createElement("span");
       row.appendChild(cell);
 
+      if( iline==0)
+      {
+        cell.style.borderBottom = "solid 1px #000000";
+        cell.style.fontWeight = "bold";
+      }
+
       for( i=0; i<words_per_cell[iline][icol]; i++)
       {
         word = document.createElement("span");
@@ -338,6 +347,7 @@ function add_a_column()
   {
     //document.getElementById("console").innerHTML += "["+num_cols+"]";
   }
+
 }
 
 function del_a_column()
@@ -353,6 +363,7 @@ function del_a_column()
   {
     //document.getElementById("console").innerHTML += "["+num_cols+"]";
   }
+
 }
 
 function move_partition_left( my)
@@ -368,6 +379,7 @@ function move_partition_left( my)
     make_table();
     //document.getElementById("console").innerHTML += "left";
   }
+
 }
 
 function move_partition_right( my)
@@ -383,6 +395,7 @@ function move_partition_right( my)
     compute_max_words_per_cell_per_column();
     make_table();
   }
+
 }
 
 function put_markdown_in_textarea_for_copying()
@@ -457,6 +470,29 @@ function put_markdown_in_textarea_for_copying()
   // columns nicely lined up (or are they?)
   for( iline=0; iline<num_rows; iline++)
   {
+    if( iline==1)
+    {
+      // hline
+
+      val+=" |-";
+
+      iword = 0;
+
+      for( icol=0; icol<num_cols; icol++)
+      {
+        for( i=0; i<max_chars_per_cell_per_column[icol]; i++)
+        {
+          val+="-";
+        }
+        val+="-|";
+        if( icol<num_cols-1)
+        {
+          val+="-";
+        }
+      }
+      val += "\n";
+    }
+
     val+=" | ";
 
     iword = 0;
@@ -484,13 +520,15 @@ function put_markdown_in_textarea_for_copying()
 
   var textarea = document.createElement("textarea");
   textarea.value = val;
-  textarea.rows = "32";
-  textarea.cols = "128";
+  textarea.rows = num_rows+2;
+  textarea.cols = textarea_cols;
   textarea.style.fontFamily = "monospace";
   markdown.appendChild(textarea);
 }
 
 </script>
+
+
 
 </body>
 </html>

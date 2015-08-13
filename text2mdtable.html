@@ -2,6 +2,12 @@
 <html>
 <head>
 <title>text2mdtable</title>
+<style>
+body
+{
+  background-color:#e0e0e0;
+}
+</style>
 </head>
 <body>
 
@@ -39,7 +45,10 @@ function main()
   textarea.value+= "\nculpa qui officia deserunt mollit anim id est laborum.";
 
   textarea.style.fontFamily = "monospace";
+  form.appendChild(document.createTextNode("Paste lines of text here:"));
+  form.appendChild(document.createElement("br"));
   form.appendChild(textarea);
+  form.appendChild(document.createElement("br"));
 
   var button = document.createElement("button");
   button.type = "button";
@@ -173,15 +182,21 @@ function make_table_interface()
   button_for_del_col.type = "button";
 
   button_for_new_col.innerHTML = "+";
-  button_for_del_col.innerHTML = "-";
+  button_for_del_col.innerHTML = "&minus;";
 
   button_for_new_col.onclick = add_a_column;
   button_for_del_col.onclick = del_a_column;
 
-  table.appendChild(button_for_del_col);
   table.appendChild(button_for_new_col);
+  table.appendChild(document.createTextNode(" More columns"));
+
+  table.appendChild(document.createElement("br"));
+
+  table.appendChild(button_for_del_col);
+  table.appendChild(document.createTextNode(" Less columns"));
 
   var container = document.createElement("div");
+  container.style.marginTop = "1em";
   container.id = "container";
   table.appendChild(container);
 
@@ -401,6 +416,10 @@ function move_partition_right( my)
 function put_markdown_in_textarea_for_copying()
 {
   var markdown = document.getElementById("markdown");
+  var x = document.createElement("span");
+  x.innerHTML = "Markdown to copy (Windows: Ctrl+C) (OS X: &#8984;C):";
+  markdown.appendChild(x);
+  markdown.appendChild(document.createElement("br"));
 
   var chars_per_cell = [];
   var max_chars_per_cell_per_column = [];
@@ -524,6 +543,7 @@ function put_markdown_in_textarea_for_copying()
   textarea.cols = textarea_cols;
   textarea.style.fontFamily = "monospace";
   markdown.appendChild(textarea);
+  textarea.select();
 }
 
 </script>

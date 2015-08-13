@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>text2mdtable</title>
+</head>
+<body>
+
+<div id="console">
+</div>
+
+<div id="table">
+</div>
+
+<script>
+window.onload = function()
+{
+  main();
+}
+
+function main()
+{
+  var form = document.createElement("form");
+
+  var textarea = document.createElement("textarea");
+  textarea.rows = "32";
+  textarea.cols = "128";
+  form.appendChild(textarea);
+
+  var button = document.createElement("button");
+  button.type = "button";
+  button.innerHTML = "Convert";
+  button.onclick = convert;
+  form.appendChild(button);
+
+  document.getElementById("table").appendChild(form);
+}
+
+function convert()
+{
+  var console = document.getElementById("console");
+  console.innerHTML = "convert pending!";
+
+  var textarea = document.getElementsByTagName("textarea");
+  var str = textarea[0].value;
+
+  var table = document.getElementById("table");
+
+  // remove the form
+  var form = document.getElementsByTagName("form");
+  table.removeChild(form[0]);
+
+  // replace with grid
+  str = str.split(/\n/);
+  var iline;
+  var iword;
+  var line;
+  for( iline=0; iline<str.length; iline++)
+  {
+    table.innerHTML += "<br/>";
+
+    line = str[iline].trim().split(" ");
+    for( iword = 0; iword<line.length; iword++)
+    {
+      table.innerHTML += " | "+line[iword];
+    }
+    table.innerHTML += " | ";
+  }
+  table.style.fontFamily = "monospace";
+}
+
+</script>
+
+</body>
+</html>

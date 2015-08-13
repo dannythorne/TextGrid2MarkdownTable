@@ -27,7 +27,17 @@ function main()
   var textarea = document.createElement("textarea");
   textarea.rows = "32";
   textarea.cols = "128";
-  textarea.value = "asdf asdf asdf sadf asdf asdf asdf asdf\nasdf asdf asdf asdf asdf asdf asdf asdf asdf asdf asdf";
+  textarea.value = "";
+  textarea.value += "Jordan Brehove, vice president of solutions at MakerBot, frequently works with";
+  textarea.value += "\nuniversities to set up 3D printing and innovation centers. At Campus Technology";
+  textarea.value += "\nin Boston on Wednesday, he was joined on the main keynote stage by Shawn Nason,";
+  textarea.value += "\nchief innovation officer at Cincinnati’s Xavier University Center for";
+  textarea.value += "\nInnovation, to discuss the many ways in which Xavier and other institutions";
+  textarea.value += "\nleverage 3D printing on campus. Beyond the cool factor, Brehove says the";
+  textarea.value += "\ntechnology has the potential to transform colleges into true centers of";
+  textarea.value += "\ninnovation, serve as a new revenue generator and attract new students and";
+  textarea.value += "\nfaculty. He sat down with EdTech during the conference to discuss those ideas and more.";
+
   textarea.style.fontFamily = "monospace";
   form.appendChild(textarea);
 
@@ -87,7 +97,7 @@ function make_table_interface()
   // split each line into array of words
   for( iline=0; iline<num_rows; iline++)
   {
-    str[iline] = str[iline].trim().split(" ");
+    str[iline] = str[iline].trim().split(/ [ ]*/g);
   }
 
   max_words_per_line = 0;
@@ -389,11 +399,18 @@ function put_markdown_in_textarea_for_copying()
   var iword;
   var icol;
 
-  // count chars per cell
   for( iline=0; iline<num_rows; iline++)
   {
     chars_per_cell[iline] = [];
+    for( icol=0; icol<num_cols; icol++)
+    {
+      chars_per_cell[iline][icol] = 0;
+    }
+  }
 
+  // count chars per cell
+  for( iline=0; iline<num_rows; iline++)
+  {
     iword = 0;
 
     for( icol=0; icol<num_cols; icol++)
@@ -425,13 +442,30 @@ function put_markdown_in_textarea_for_copying()
   // accumulate textarea value string
   var val = "";
 
+  if( false /* diagnostics */)
+  {
+    for( iline=0; iline<num_rows; iline++)
+    {
+      val+=" | ";
+
+      for( icol=0; icol<num_cols; icol++)
+      {
+        val += words_per_cell[iline][icol]+" "+chars_per_cell[iline][icol]+" "+max_chars_per_cell_per_column[icol];
+        val+=" | ";
+      }
+      val += "\n";
+    }
+  }
+
+  // columns nicely lined up (or are they?)
   for( iline=0; iline<num_rows; iline++)
   {
     val+=" | ";
 
+    iword = 0;
+
     for( icol=0; icol<num_cols; icol++)
     {
-      iword = 0;
       for( i=0; i<words_per_cell[iline][icol]; i++)
       {
         val+=str[iline][iword];

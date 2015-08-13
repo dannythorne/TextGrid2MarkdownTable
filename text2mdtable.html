@@ -11,6 +11,9 @@
 <div id="table">
 </div>
 
+<div id="markdown">
+</div>
+
 <script>
 window.onload = function()
 {
@@ -53,6 +56,9 @@ function make_table_interface()
 
   var table = document.getElementById("table");
   table.style.marginTop = "1em";
+
+  var markdown = document.getElementById("markdown");
+  markdown.style.marginTop = "1em";
 
   // remove the form
   var form = document.getElementsByTagName("form");
@@ -226,10 +232,18 @@ function make_table()
     container.removeChild(container.firstChild);
   }
 
+  var markdown = document.getElementById("markdown");
+  while( markdown.childNodes.length > 0)
+  {
+    markdown.removeChild(markdown.firstChild);
+  }
+
   var row;
   var cell;
   var word;
   var button;
+
+  var i, j;
 
   for( iline=0; iline<num_rows; iline++)
   {
@@ -254,7 +268,14 @@ function make_table()
         word.style.paddingRight = "2px";
         word.style.marginLeft = "2px";
         word.style.marginRight = "2px";
-        word.innerHTML += str[iline][iword];
+        word.innerHTML += str[iline][iword].substr(0,4);
+        if( str[iline][iword].length < 4)
+        {
+          for( j=4; j>str[iline][iword].length; j--)
+          {
+            word.innerHTML += "&nbsp;";
+          }
+        }
         iword++;
 
       }
@@ -294,6 +315,7 @@ function make_table()
   }
   container.style.fontFamily = "monospace";
 
+  put_markdown_in_textarea_for_copying();
 }
 
 function add_a_column()
@@ -301,13 +323,13 @@ function add_a_column()
   if( num_cols<max_words_per_line)
   {
     num_cols++;
-    document.getElementById("console").innerHTML += "["+num_cols+"]";
+    //document.getElementById("console").innerHTML += "["+num_cols+"]";
     compute_table();
     make_table();
   }
   else
   {
-    document.getElementById("console").innerHTML += "["+num_cols+"]";
+    //document.getElementById("console").innerHTML += "["+num_cols+"]";
   }
 }
 
@@ -316,13 +338,13 @@ function del_a_column()
   if( num_cols > 1)
   {
     num_cols--;
-    document.getElementById("console").innerHTML += "["+num_cols+"]";
+    //document.getElementById("console").innerHTML += "["+num_cols+"]";
     compute_table();
     make_table();
   }
   else
   {
-    document.getElementById("console").innerHTML += "["+num_cols+"]";
+    //document.getElementById("console").innerHTML += "["+num_cols+"]";
   }
 }
 
@@ -337,7 +359,7 @@ function move_partition_left( my)
     words_per_cell[ row ][ col+1 ]++;
     compute_max_words_per_cell_per_column();
     make_table();
-    document.getElementById("console").innerHTML += "left";
+    //document.getElementById("console").innerHTML += "left";
   }
 }
 
@@ -348,12 +370,93 @@ function move_partition_right( my)
   var col = parseInt(i[1]);
   if( words_per_cell[ row ][ col+1 ] > 0)
   {
-    document.getElementById("console").innerHTML += "right";
+    //document.getElementById("console").innerHTML += "right";
     words_per_cell[ row ][ col   ]++;
     words_per_cell[ row ][ col+1 ]--;
     compute_max_words_per_cell_per_column();
     make_table();
   }
+}
+
+function put_markdown_in_textarea_for_copying()
+{
+  var markdown = document.getElementById("markdown");
+
+  var chars_per_cell = [];
+  var max_chars_per_cell_per_column = [];
+
+  var iline;
+  var iword;
+  var icol;
+
+  // count chars per cell
+  for( iline=0; iline<num_rows; iline++)
+  {
+    chars_per_cell[iline] = [];
+
+    iword = 0;
+
+    for( icol=0; icol<num_cols; icol++)
+    {
+      chars_per_cell[iline][icol] = 0;
+      for( i=0; i<words_per_cell[iline][icol]; i++)
+      {
+        chars_per_cell[iline][icol] += str[iline][iword].length;
+        iword++;
+      }
+      chars_per_cell[iline][icol] += words_per_cell[iline][icol]-1; // count the in between spaces
+    }
+  }
+
+  // compute max chars per cell per column
+  for( icol=0; icol<num_cols; icol++)
+  {
+    max_chars_per_cell_per_column[icol] = 0;
+
+    for( iline=0; iline<num_rows; iline++)
+    {
+      if( max_chars_per_cell_per_column[icol] < chars_per_cell[iline][icol])
+      {
+        max_chars_per_cell_per_column[icol] = chars_per_cell[iline][icol];
+      }
+    }
+  }
+
+  // accumulate textarea value string
+  var val = "";
+
+  for( iline=0; iline<num_rows; iline++)
+  {
+    val+=" | ";
+
+    for( icol=0; icol<num_cols; icol++)
+    {
+      iword = 0;
+      for( i=0; i<words_per_cell[iline][icol]; i++)
+      {
+        val+=str[iline][iword];
+        if( i<words_per_cell[iline][icol]-1)
+        {
+          val+=" ";
+        }
+        iword++;
+      }
+
+      for( i=max_chars_per_cell_per_column[icol]; i>chars_per_cell[iline][icol]; i--)
+      {
+        val+=" ";
+      }
+      val+=" | ";
+    }
+    val += "\n";
+  }
+
+  var textarea = document.createElement("textarea");
+  textarea.value = val;
+  textarea.rows = "32";
+  textarea.cols = "128";
+  textarea.style.fontFamily = "monospace";
+  markdown.appendChild(textarea);
 }
 
 </script>

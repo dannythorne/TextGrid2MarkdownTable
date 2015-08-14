@@ -5,7 +5,7 @@
 <style>
 body
 {
-  background-color:#e0e0e0;
+  background-color:#f0f0f0;
 }
 </style>
 </head>
@@ -293,12 +293,15 @@ function make_table()
       for( i=0; i<words_per_cell[iline][icol]; i++)
       {
         word = document.createElement("span");
+        word.style.backgroundColor = "#e0e0e0";
+        word.style.borderRadius = "2px";
         cell.appendChild(word);
 
         word.style.paddingLeft = "2px";
         word.style.paddingRight = "2px";
         word.style.marginLeft = "2px";
         word.style.marginRight = "2px";
+        word.style.borderRight = "solid 1px #e0e0e0";
         word.innerHTML += str[iline][iword].substr(0,4);
         if( str[iline][iword].length < 4)
         {
@@ -306,6 +309,11 @@ function make_table()
           {
             word.innerHTML += "&nbsp;";
           }
+        }
+        else if( str[iline][iword].length > 4)
+        {
+          word.style.borderRight = "dashed 1px #c09090";
+          word.title = str[iline][iword];
         }
         iword++;
 
@@ -321,6 +329,7 @@ function make_table()
         word.style.paddingRight = "2px";
         word.style.marginLeft = "2px";
         word.style.marginRight = "2px";
+        word.style.borderRight = "solid 1px #f0f0f0";
         word.innerHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
       }
 

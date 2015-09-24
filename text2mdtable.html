@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Text Grid To Markdown Table</title>
+<title>Text Grid To Markdown Table Converter</title>
+<meta name="description" content="This is a tool for partially automating the process of converting a plain text grid of words into a Markdown table.">
 <style>
 body
 {
@@ -11,7 +12,7 @@ body
 </head>
 <body>
 
-<h1>Text Grid To Markdown Table</h1>
+<h1>Text Grid To Markdown Table Converter</h1>
 
 <div id="console">
 </div>
@@ -39,12 +40,22 @@ function main()
   textarea.rows = textarea_rows;
   textarea.cols = textarea_cols;
   textarea.value = "";
-  textarea.value+= "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor";
-  textarea.value+= "\nincididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis";
-  textarea.value+= "\nnostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-  textarea.value+= "\nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu";
-  textarea.value+= "\nfugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in";
-  textarea.value+= "\nculpa qui officia deserunt mollit anim id est laborum.";
+  textarea.value+= "Latin Name English Name Latitude Longitude Diameter";
+  textarea.value+= "\nPalus Epidemiarum Marsh of Epidemics 32.0S 28.2W 286km";
+  textarea.value+= "\nPalus Putredinis Marsh of Decay 26.5N 0.4E 161km";
+  textarea.value+= "\nPalus Somni Marsh of Sleep 14.1N 45.0E 143km";
+  textarea.value+= "\nSinus Aestuum Seething Bay 10.9N 8.8W 290km";
+  textarea.value+= "\nSinus Amoris Bay of Love 18.1N 39.1E 130km";
+  textarea.value+= "\nSinus Asperitatis Bay of Roughness 3.8S 27.4E 206km";
+  textarea.value+= "\nSinus Concordiae Bay of Harmony 10.8N 43.2E 142km";
+  textarea.value+= "\nSinus Fidei Bay of Trust 18.0N 2.0E 70km";
+  textarea.value+= "\nSinus Honoris Bay of Honor 11.7N 18.1E 109km";
+  textarea.value+= "\nSinus Iridum Bay of Rainbows 44.1N 31.5W 236km";
+  textarea.value+= "\nSinus Lunicus Lunik Bay 31.8N 1.4W 126km";
+  textarea.value+= "\nSinus Medii Bay of the center 2.4N 1.7E 335km";
+  textarea.value+= "\nSinus Roris Bay of Dew 54.0N 56.6W 202km";
+  textarea.value+= "\nSinus Successus Bay of Success 0.9N 59.0E 132km";
+
 
   textarea.style.fontFamily = "monospace";
   form.appendChild(document.createTextNode("Paste lines of text here:"));
@@ -57,6 +68,7 @@ function main()
   button.innerHTML = "Make Markdown Table";
   button.onclick = make_table_interface; 
   form.appendChild(button);
+
 
   document.getElementById("table").appendChild(form);
 }
